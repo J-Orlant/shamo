@@ -9,6 +9,7 @@ Color kBackgroundColor1 = Color(0xff1F1D2B);
 Color kBackgroundColor2 = Color(0xff2B2937);
 Color kBackgroundColor3 = Color(0xff242231);
 Color kBackgroundColor4 = Color(0xff252836);
+Color kBackgroundColor5 = Color(0xff2B2844);
 Color kPrimaryTextColor = Color(0xffF1F0F2);
 Color kSecondaryTextColor = Color(0xff999999);
 Color kSubtitleTextColor = Color(0xff504F5E);
