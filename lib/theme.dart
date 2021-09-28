@@ -15,7 +15,7 @@ Color kSecondaryTextColor = Color(0xff999999);
 Color kSubtitleTextColor = Color(0xff504F5E);
 Color kTransparentColor = Colors.transparent;
 Color kBlackColor = Color(0xff2E2E2E);
-
+Color kCardColor = Color(0xffECEDEF);
 TextStyle primaryTextStyle = GoogleFonts.poppins(
   color: kPrimaryTextColor,
 );
