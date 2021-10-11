@@ -1,11 +1,42 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shamo/providers/auth_provider.dart';
 import 'package:shamo/theme.dart';
 
 class SignUpPage extends StatelessWidget {
-  const SignUpPage({Key? key}) : super(key: key);
+  SignUpPage({Key? key}) : super(key: key);
+
+  TextEditingController nameController = TextEditingController(text: '');
+  TextEditingController usernameController = TextEditingController(text: '');
+  TextEditingController emailController = TextEditingController(text: '');
+  TextEditingController passwordController = TextEditingController(text: '');
 
   @override
   Widget build(BuildContext context) {
+    AuthProvider authProvider = Provider.of<AuthProvider>(context);
+
+    var handleSignUp = () async {
+      if (await authProvider.register(
+        name: nameController.text,
+        username: usernameController.text,
+        email: emailController.text,
+        password: passwordController.text,
+      )) {
+        Navigator.pushNamed(context, '/main');
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            duration: Duration(seconds: 1),
+            backgroundColor: kAlertColor,
+            content: Text(
+              'Gagal Register',
+              textAlign: TextAlign.center,
+            ),
+          ),
+        );
+      }
+    };
+
     Widget header() {
       return Container(
         child: Column(
@@ -69,6 +100,7 @@ class SignUpPage extends StatelessWidget {
                     ),
                     Expanded(
                       child: TextFormField(
+                        controller: nameController,
                         style: primaryTextStyle,
                         decoration: InputDecoration.collapsed(
                           hintText: 'Your Full Name',
@@ -124,6 +156,7 @@ class SignUpPage extends StatelessWidget {
                     ),
                     Expanded(
                       child: TextFormField(
+                        controller: usernameController,
                         style: primaryTextStyle,
                         decoration: InputDecoration.collapsed(
                           hintText: 'Your Username',
@@ -179,6 +212,7 @@ class SignUpPage extends StatelessWidget {
                     ),
                     Expanded(
                       child: TextFormField(
+                        controller: emailController,
                         style: primaryTextStyle,
                         decoration: InputDecoration.collapsed(
                           hintText: 'Your Email Address',
@@ -234,6 +268,7 @@ class SignUpPage extends StatelessWidget {
                     ),
                     Expanded(
                       child: TextFormField(
+                        controller: passwordController,
                         style: primaryTextStyle,
                         decoration: InputDecoration.collapsed(
                           hintText: 'Your Password',
@@ -265,9 +300,7 @@ class SignUpPage extends StatelessWidget {
             ),
             backgroundColor: kPrimaryColor,
           ),
-          onPressed: () {
-            Navigator.pushNamed(context, '/main');
-          },
+          onPressed: handleSignUp,
           child: Text(
             'Sign Up',
             style: primaryTextStyle.copyWith(
@@ -282,6 +315,7 @@ class SignUpPage extends StatelessWidget {
     Widget footer() {
       return Container(
         margin: EdgeInsets.only(
+          top: 20,
           bottom: 30,
         ),
         child: Row(
@@ -312,23 +346,18 @@ class SignUpPage extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: kBackgroundColor1,
-      resizeToAvoidBottomInset: false,
       body: SafeArea(
-        child: Container(
-          margin: EdgeInsets.all(defaultMargin),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              header(),
-              inputName(),
-              inputUsername(),
-              inputEmail(),
-              inputPassword(),
-              signUpButton(),
-              Spacer(),
-              footer(),
-            ],
-          ),
+        child: ListView(
+          padding: EdgeInsets.all(defaultMargin),
+          children: [
+            header(),
+            inputName(),
+            inputUsername(),
+            inputEmail(),
+            inputPassword(),
+            signUpButton(),
+            footer(),
+          ],
         ),
       ),
     );
