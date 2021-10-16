@@ -1,21 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shamo/pages/widget/loading_button.dart';
 import 'package:shamo/providers/auth_provider.dart';
 import 'package:shamo/theme.dart';
 
-class SignUpPage extends StatelessWidget {
+class SignUpPage extends StatefulWidget {
   SignUpPage({Key? key}) : super(key: key);
 
+  @override
+  State<SignUpPage> createState() => _SignUpPageState();
+}
+
+class _SignUpPageState extends State<SignUpPage> {
   TextEditingController nameController = TextEditingController(text: '');
+
   TextEditingController usernameController = TextEditingController(text: '');
+
   TextEditingController emailController = TextEditingController(text: '');
+
   TextEditingController passwordController = TextEditingController(text: '');
+
+  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
     AuthProvider authProvider = Provider.of<AuthProvider>(context);
 
     var handleSignUp = () async {
+      setState(() {
+        isLoading = true;
+      });
+
       if (await authProvider.register(
         name: nameController.text,
         username: usernameController.text,
@@ -35,6 +50,10 @@ class SignUpPage extends StatelessWidget {
           ),
         );
       }
+
+      setState(() {
+        isLoading = false;
+      });
     };
 
     Widget header() {
@@ -355,7 +374,7 @@ class SignUpPage extends StatelessWidget {
             inputUsername(),
             inputEmail(),
             inputPassword(),
-            signUpButton(),
+            (isLoading) ? LoadingButton() : signUpButton(),
             footer(),
           ],
         ),
