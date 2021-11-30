@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shamo/models/product_model.dart';
+import 'package:shamo/providers/wishlist_provider.dart';
 import 'package:shamo/theme.dart';
 
 class WishlistTile extends StatelessWidget {
-  const WishlistTile({Key? key}) : super(key: key);
+  final ProductModel productModel;
+  WishlistTile(this.productModel);
 
   @override
   Widget build(BuildContext context) {
+    WishListProvider wishListProvider = Provider.of<WishListProvider>(context);
+
     return Container(
       margin: EdgeInsets.only(
         top: 20,
@@ -37,21 +43,26 @@ class WishlistTile extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Terrex Urban Low',
+                  productModel.name.toString(),
                   style: primaryTextStyle.copyWith(
                     fontWeight: semiBold,
                   ),
                 ),
                 Text(
-                  '\$143,98',
+                  '\$' + productModel.price.toString(),
                   style: priceTextStyle,
                 ),
               ],
             ),
           ),
-          Image.asset(
-            'assets/button_wishlist_blue.png',
-            width: 34,
+          GestureDetector(
+            onTap: () {
+              wishListProvider.setProduct(productModel);
+            },
+            child: Image.asset(
+              'assets/button_wishlist_blue.png',
+              width: 34,
+            ),
           ),
         ],
       ),

@@ -11,6 +11,8 @@ import 'package:shamo/pages/sign_in_page.dart';
 import 'package:shamo/pages/sign_up_page.dart';
 import 'package:shamo/pages/splash_page.dart';
 import 'package:shamo/providers/auth_provider.dart';
+import 'package:shamo/providers/product_provider.dart';
+import 'package:shamo/providers/wishlist_provider.dart';
 
 void main() => runApp(MyApp());
 
@@ -21,8 +23,14 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(
+        ChangeNotifierProvider<AuthProvider>(
           create: (context) => AuthProvider(),
+        ),
+        ChangeNotifierProvider<ProductProvider>(
+          create: (context) => ProductProvider(),
+        ),
+        ChangeNotifierProvider<WishListProvider>(
+          create: (context) => WishListProvider(),
         ),
       ],
       child: MaterialApp(
@@ -34,7 +42,6 @@ class MyApp extends StatelessWidget {
           '/main': (context) => MainPage(),
           '/chat': (context) => DetailChatPage(),
           '/edit-profile': (context) => EditProfilePage(),
-          '/product': (context) => ProductPage(),
           '/cart': (context) => CartPage(),
           '/checkout': (context) => CheckoutPage(),
           '/checkout-success': (context) => CheckoutSuccessPage(),

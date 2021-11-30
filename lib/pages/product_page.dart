@@ -1,9 +1,14 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shamo/models/product_model.dart';
+import 'package:shamo/providers/wishlist_provider.dart';
 import 'package:shamo/theme.dart';
 
 class ProductPage extends StatefulWidget {
-  ProductPage({Key? key}) : super(key: key);
+  final ProductModel productModel;
+
+  ProductPage(this.productModel);
 
   @override
   _ProductPageState createState() => _ProductPageState();
@@ -26,10 +31,9 @@ class _ProductPageState extends State<ProductPage> {
 
   int _currentIndex = 0;
 
-  bool isWishlist = false;
-
   @override
   Widget build(BuildContext context) {
+    WishListProvider wishListProvider = Provider.of<WishListProvider>(context);
     Future<void> showSuccessDialog() async {
       return showDialog(
         context: context,
@@ -231,14 +235,14 @@ class _ProductPageState extends State<ProductPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'TERREX URBAN LOW',
+                          widget.productModel.name.toString(),
                           style: primaryTextStyle.copyWith(
                             fontWeight: semiBold,
                             fontSize: 18,
                           ),
                         ),
                         Text(
-                          'Hiking',
+                          widget.productModel.category!.name.toString(),
                           style: secondaryTextStyle.copyWith(
                             fontSize: 12,
                           ),
@@ -248,11 +252,9 @@ class _ProductPageState extends State<ProductPage> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      setState(() {
-                        isWishlist = !isWishlist;
-                      });
+                      wishListProvider.setProduct(widget.productModel);
 
-                      if (isWishlist) {
+                      if (wishListProvider.isWishList(widget.productModel)) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             duration: Duration(seconds: 1),
@@ -277,7 +279,7 @@ class _ProductPageState extends State<ProductPage> {
                       }
                     },
                     child: Image.asset(
-                      (isWishlist)
+                      (wishListProvider.isWishList(widget.productModel))
                           ? 'assets/button_wishlist_blue.png'
                           : 'assets/button_wishlist.png',
                       width: 46,
@@ -308,7 +310,7 @@ class _ProductPageState extends State<ProductPage> {
                     style: primaryTextStyle,
                   ),
                   Text(
-                    '\$143,98',
+                    '\$' + widget.productModel.price.toString(),
                     style: priceTextStyle.copyWith(
                       fontSize: 16,
                       fontWeight: semiBold,
@@ -338,7 +340,7 @@ class _ProductPageState extends State<ProductPage> {
                     height: 12,
                   ),
                   Text(
-                    'Unpaved trails and mixed surfaces are easy when you have the traction and support you need. Casual enough for the daily commute.',
+                    widget.productModel.description.toString(),
                     style: subtitleTextStyle.copyWith(
                       fontWeight: light,
                     ),

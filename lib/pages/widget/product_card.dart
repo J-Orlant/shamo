@@ -1,14 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:shamo/models/product_model.dart';
 import 'package:shamo/theme.dart';
 
+import '../product_page.dart';
+
 class ProductCard extends StatelessWidget {
-  const ProductCard({Key? key}) : super(key: key);
+  final ProductModel product;
+
+  ProductCard(this.product);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.pushNamed(context, '/product');
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ProductPage(product),
+          ),
+        );
       },
       child: Container(
         width: 215,
@@ -40,7 +50,7 @@ class ProductCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Hikking',
+                    product.category!.name.toString(),
                     style: secondaryTextStyle.copyWith(
                       fontSize: 12,
                     ),
@@ -49,15 +59,16 @@ class ProductCard extends StatelessWidget {
                     height: 6,
                   ),
                   Text(
-                    'COURT VISION 2.0',
+                    product.name.toString(),
                     style: blackTextStyle.copyWith(
                       fontSize: 18,
                       fontWeight: semiBold,
                     ),
                     overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
                   ),
                   Text(
-                    '\$58,67',
+                    '\$' + product.price.toString(),
                     style: priceTextStyle.copyWith(
                       fontWeight: medium,
                     ),

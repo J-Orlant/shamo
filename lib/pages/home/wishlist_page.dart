@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shamo/pages/widget/wishlist_tile.dart';
+import 'package:shamo/providers/wishlist_provider.dart';
 import 'package:shamo/theme.dart';
 
 class WishListPage extends StatelessWidget {
@@ -7,6 +9,7 @@ class WishListPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    WishListProvider wishListProvider = Provider.of<WishListProvider>(context);
     Widget header() {
       return AppBar(
         backgroundColor: kBackgroundColor1,
@@ -92,11 +95,11 @@ class WishListPage extends StatelessWidget {
             padding: EdgeInsets.symmetric(
               horizontal: defaultMargin,
             ),
-            children: [
-              WishlistTile(),
-              WishlistTile(),
-              WishlistTile(),
-            ],
+            children: wishListProvider.wishList
+                .map(
+                  (product) => WishlistTile(product),
+                )
+                .toList(),
           ),
         ),
       );
@@ -105,8 +108,7 @@ class WishListPage extends StatelessWidget {
     return Column(
       children: [
         header(),
-        // emptyWishlist(),
-        content(),
+        (wishListProvider.wishList.length) == 0 ? emptyWishlist() : content(),
       ],
     );
   }
