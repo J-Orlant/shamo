@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:shamo/models/cart_model.dart';
 
 class TransactionService {
-  String baseUrl = 'http://192.168.1.3:8000/api';
+  String baseUrl = 'http://192.168.1.8:8000/api';
 
   Future<bool> checkOut({
     required String token,
